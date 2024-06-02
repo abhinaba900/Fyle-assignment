@@ -30,8 +30,6 @@
     console.log("Modal is now hidden");
   });
 
-  // Form submission
-
   // Retrieve input values
   var email = document.getElementById("exampleInputEmail1");
   var firstName = document.getElementById("first-name");
@@ -61,25 +59,29 @@
       firstName: firstNames,
       lastName: lastNames,
     };
-    axios
-      .post("https://getform.io/f/nbvvqvmb", object, {
-        headers: { Accept: "application/json" },
-      })
-      .then((response) => {
+
+    $.ajax({
+      url: "https://getform.io/f/nbvvqvmb",
+      method: "POST",
+      data: { email: emailValue, firstName: firstNames, lastName: lastNames },
+      headers: { Accept: "application/json" },
+      success: function (response) {
         console.log("Form submitted successfully:", response);
-        // email.value = "";
-        // password.value = "";
         email.value = "";
         firstName.value = "";
         lastName.value = "";
-
         alert("Form submitted successfully");
-      })
-      .catch((error) => {
+      },
+      error: function (error) {
         console.log("Error submitting form:", error);
         alert("Error submitting form");
-      });
+      },
+    });
   }
+
+  // Add event listener to the form
+  var form = document.querySelector("form"); // Ensure you target the correct form element
+  form.addEventListener("submit", submitForm);
 
   // Event listener for form submission
   const sections = document.querySelectorAll(".c-child");
@@ -104,5 +106,4 @@
   });
 
   handleClick(0);
-
 });
